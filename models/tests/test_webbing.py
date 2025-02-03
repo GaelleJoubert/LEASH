@@ -2,7 +2,8 @@ import numpy as np
 import pytest
 
 from models.model_exception import StretchCurveException, WebbingException
-from models.webbing import StretchCurve, Webbing, Segment
+from models.webbing import StretchCurve, Webbing
+from models.segment import Segment
 
 
 def test_stretch_curve_init():
@@ -58,3 +59,34 @@ def test_segment_from_webbing():
     assert np.array_equal(se.force, wb.stretch_curve.force)
     assert se.force_from_length(11.5) == 1.5
     assert se.length_from_force(0.5) == 10.5
+
+
+def test_tape_two_segments():
+    wb = Webbing("paul", [0, 10, 100], [0, 1, 10], 1)
+    main = Segment.from_webbing(wb, 10)
+    backup = Segment.from_webbing(wb, 11)
+    taped = Segment.tape_two_segments(main, backup)
+    assert taped.weight == main.weight + backup.weight
+    assert taped.length[0] == 10
+    assert taped.length[-1] == 20
+    assert taped.length[1] == 11
+    assert taped.force[0] == 0
+    assert taped.force[1] == 1
+    assert taped.force[-1] == 10 + 10 * 9/11
+
+
+def test_join_two_segments():
+    wb_m = Webbing("paul", [0, 10, 100], [0, 1, 10], 1)
+    wb_b = Webbing("paul", [0, 5, 50], [0, 1, 10], 1)
+    main = Segment.from_webbing(wb_m, 10)
+    backup = Segment.from_webbing(wb_b, 11)
+    taped = Segment.tape_two_segments(main, backup)
+    assert taped.weight == main.weight + backup.weight
+    assert taped.length[0] == 10
+    assert taped.length[-1] == 16.5
+    assert taped.length[1] == 11
+    assert taped.force[0] == 0
+    assert taped.force[1] == 1
+    assert taped.force[-1] == 16.5
+
+

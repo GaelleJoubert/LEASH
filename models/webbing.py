@@ -21,12 +21,12 @@ class StretchCurve:
 
 
 class Webbing:
-    def __init__(self, name: str, stretches: [float], forces: [float], weight: float):
-        if weight <= 0:
+    def __init__(self, name: str, stretches: [float], forces: [float], linear_weight: float):
+        if linear_weight <= 0:
             raise WebbingException("weight of webbing has to be positive")
         if name.strip() == "":
             raise WebbingException("Name should not be empty")
         self.stretch_curve = StretchCurve(stretches, forces)
-        self.weight = weight
+        self.linear_weight = linear_weight
         self.name = name
 

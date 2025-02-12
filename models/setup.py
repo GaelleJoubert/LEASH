@@ -6,7 +6,8 @@ class Connection(bool):
 
 
 class Setup:
-    def __init__(self, main: [Webbing], backup: [Webbing]):
+    def __init__(self, main: [Webbing], backup: [Webbing], connections: [bool]):
         # each segment and whether there is a main/backup connection after it.
         self.main = main
         self.backup = backup
+        self.connections = connections

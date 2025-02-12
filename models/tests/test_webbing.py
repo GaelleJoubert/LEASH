@@ -28,7 +28,7 @@ def test_stretch_curve_incorrect_raises_exception():
 def test_webbing_init():
     wb = Webbing("paul", [0, 1, 2], [0, 2, 4], 1)
     assert wb.name == "paul"
-    assert wb.weight == 1
+    assert wb.linear_weight == 1
     assert wb.stretch_curve.stretch[2] == 2
     assert wb.stretch_curve.force[1] == 2
 
@@ -53,10 +53,10 @@ def test_segment_from_webbing():
     wb = Webbing("paul", [0, 10, 20], [0, 1, 2], 1)
     se = Segment.from_webbing(wb, 10)
     assert se.weight == 10
-    assert se.length[0] == 10
-    assert se.length[1] == 11
-    assert se.length[2] == 12
-    assert np.array_equal(se.force, wb.stretch_curve.force)
+    assert se.lengths[0] == 10
+    assert se.lengths[1] == 11
+    assert se.lengths[2] == 12
+    assert np.array_equal(se.forces, wb.stretch_curve.force)
     assert se.force_from_length(11.5) == 1.5
     assert se.length_from_force(0.5) == 10.5
 
@@ -67,12 +67,12 @@ def test_tape_two_segments():
     backup = Segment.from_webbing(wb, 11)
     taped = Segment.tape_two_segments(main, backup)
     assert taped.weight == main.weight + backup.weight
-    assert taped.length[0] == 10
-    assert taped.length[-1] == 20
-    assert taped.length[1] == 11
-    assert taped.force[0] == 0
-    assert taped.force[1] == 1
-    assert taped.force[-1] == 10 + 10 * 9/11
+    assert taped.lengths[0] == 10
+    assert taped.lengths[-1] == 20
+    assert taped.lengths[1] == 11
+    assert taped.forces[0] == 0
+    assert taped.forces[1] == 1
+    assert taped.forces[-1] == 10 + 10 * 9/11
 
 
 def test_join_two_segments():
@@ -82,11 +82,11 @@ def test_join_two_segments():
     backup = Segment.from_webbing(wb_b, 11)
     taped = Segment.tape_two_segments(main, backup)
     assert taped.weight == main.weight + backup.weight
-    assert taped.length[0] == 10
-    assert taped.length[-1] == 16.5
-    assert taped.length[1] == 11
-    assert taped.force[0] == 0
-    assert taped.force[1] == 1
-    assert taped.force[-1] == 16.5
+    assert taped.lengths[0] == 10
+    assert taped.lengths[-1] == 16.5
+    assert taped.lengths[1] == 11
+    assert taped.forces[0] == 0
+    assert taped.forces[1] == 1
+    assert taped.forces[-1] == 16.5
 
 

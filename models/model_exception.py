@@ -10,6 +10,14 @@ class SegmentException(Exception):
     pass
 
 
+class SetUpException(Exception):
+    pass
+
+
+class SetUpComputeException(Exception):
+    pass
+
+
 class SegmentComputeError(Exception):
     pass
 
